@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevPulse — 917 Ventures</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+    :root {
+      --bg: #080b12; --surface: #0e1420; --border: #1a2035;
+      --accent: #4f6ef7; --accent2: #00e5c0; --text: #e8eaf6;
+      --muted: #5a6380; --success: #00e5c0; --warning: #f7a84f; --danger: #f75f5f;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(79,110,247,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(79,110,247,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+    nav { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(8,11,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 100; }
+    .logo { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+    .logo span { color: var(--accent2); }
+    .nav-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-family: 'Space Mono', monospace; }
+    .pulse { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,229,192,0.4); } 50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0,229,192,0); } }
+    main { position: relative; z-index: 1; padding: 120px 40px 60px; max-width: 1200px; margin: 0 auto; }
+    .hero { margin-bottom: 60px; }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent2); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 700; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+    h1 .highlight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.6; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+    .stat-card:hover { border-color: var(--accent); }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.2s; }
+    .stat-card:hover::before { opacity: 1; }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: 'Space Mono', monospace; }
+    .stat-value { font-size: 36px; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--text); }
+    .stat-value.green { color: var(--success); } .stat-value.blue { color: var(--accent); } .stat-value.orange { color: var(--warning); }
+    .stat-change { font-size: 12px; color: var(--success); margin-top: 4px; }
+    .section-title { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-family: 'Space Mono', monospace; margin-bottom: 16px; }
+    .pipeline-container { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; margin-bottom: 40px; }
+    .pipeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .pipeline-name { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+    .tag { font-size: 11px; font-family: 'Space Mono', monospace; padding: 3px 8px; border-radius: 4px; background: rgba(79,110,247,0.15); color: var(--accent); border: 1px solid rgba(79,110,247,0.3); }
+    .pipeline-stages { display: flex; align-items: center; overflow-x: auto; padding-bottom: 8px; }
+    .stage { display: flex; align-items: center; flex-shrink: 0; }
+    .stage-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; min-width: 130px; text-align: center; transition: all 0.2s; cursor: pointer; }
+    .stage-box:hover { transform: translateY(-2px); }
+    .stage-box.passed { border-color: rgba(0,229,192,0.4); background: rgba(0,229,192,0.05); }
+    .stage-box.running { border-color: rgba(79,110,247,0.4); background: rgba(79,110,247,0.05); animation: glow 1.5s infinite alternate; }
+    .stage-box.pending { border-color: var(--border); opacity: 0.5; }
+    @keyframes glow { from { box-shadow: 0 0 5px rgba(79,110,247,0.2); } to { box-shadow: 0 0 15px rgba(79,110,247,0.5); } }
+    .stage-icon { font-size: 20px; margin-bottom: 6px; }
+    .stage-name { font-size: 12px; font-family: 'Space Mono', monospace; color: var(--text); margin-bottom: 4px; }
+    .stage-status { font-size: 11px; color: var(--muted); }
+    .stage-status.green { color: var(--success); } .stage-status.blue { color: var(--accent); }
+    .arrow { color: var(--border); font-size: 20px; padding: 0 8px; flex-shrink: 0; }
+    .progress-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; animation: progress 3s ease-in-out infinite; }
+    @keyframes progress { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .service-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.2s, transform 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
+    .service-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .service-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .service-icon.blue { background: rgba(79,110,247,0.15); } .service-icon.green { background: rgba(0,229,192,0.15); } .service-icon.orange { background: rgba(247,168,79,0.15); } .service-icon.purple { background: rgba(180,79,247,0.15); }
+    .service-info { flex: 1; }
+    .service-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .service-url { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 8px; }
+    .service-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 3px 8px; border-radius: 20px; }
+    .service-badge.online { background: rgba(0,229,192,0.1); color: var(--success); border: 1px solid rgba(0,229,192,0.2); }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .activity { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+    .activity-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .activity-dot.green { background: var(--success); } .activity-dot.blue { background: var(--accent); } .activity-dot.orange { background: var(--warning); }
+    .activity-text { font-size: 14px; line-height: 1.5; }
+    .activity-text strong { color: var(--text); } .activity-text span { color: var(--muted); }
+    .activity-time { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; margin-left: auto; flex-shrink: 0; }
+    footer { position: relative; z-index: 1; text-align: center; padding: 30px; color: var(--muted); font-size: 13px; font-family: 'Space Mono', monospace; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">dev<span>pulse</span></div>
+    <div class="nav-status"><div class="pulse"></div>917ventures.com — all systems nominal</div>
+  </nav>
+  <main>
+    <div class="hero">
+      <div class="eyebrow">Developer Playground</div>
+      <h1>Ship fast.<br><span class="highlight">Break nothing.</span></h1>
+      <p class="hero-sub">Your team's live CI/CD environment. Every push triggers a pipeline. Every pipeline tells a story.</p>
+    </div>
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">Pipelines Run</div><div class="stat-value blue" id="pipelines">0</div><div class="stat-change">↑ +3 today</div></div>
+      <div class="stat-card"><div class="stat-label">Success Rate</div><div class="stat-value green">98.2%</div><div class="stat-change">↑ last 30 days</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Deploy Time</div><div class="stat-value orange">1m 42s</div><div class="stat-change">↓ 12s faster</div></div>
+      <div class="stat-card"><div class="stat-label">Active Services</div><div class="stat-value green">4</div><div class="stat-change">All healthy</div></div>
+    </div>
+    <div class="section-title">Last Pipeline Run</div>
+    <div class="pipeline-container">
+      <div class="pipeline-header">
+        <div class="pipeline-name">my-first-pipeline <span class="tag">main</span></div>
+        <div style="font-size:13px;color:var(--muted);font-family:'Space Mono',monospace;">Instance #1 · 18m 35s</div>
+      </div>
+      <div class="pipeline-stages">
+        <div class="stage"><div class="stage-box passed"><div class="stage-icon">⬇️</div><div class="stage-name">checkout</div><div class="stage-status green">passed</div></div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><div class="stage-box passed"><div class="stage-icon">🔨</div><div class="stage-name">build</div><div class="stage-status green">passed</div></div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><div class="stage-box passed"><div class="stage-icon">🧪</div><div class="stage-name">test</div><div class="stage-status green">passed</div></div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><div class="stage-box running"><div class="stage-icon">🚀</div><div class="stage-name">deploy</div><div class="stage-status blue">running</div><div class="progress-bar"><div class="progress-fill"></div></div></div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><div class="stage-box pending"><div class="stage-icon">✅</div><div class="stage-name">verify</div><div class="stage-status">pending</div></div></div>
+      </div>
+    </div>
+    <div class="section-title">Running Services</div>
+    <div class="services">
+      <a class="service-card" href="http://100.82.34.59:8153" target="_blank"><div class="service-icon blue">🔁</div><div class="service-info"><div class="service-name">GoCD</div><div class="service-url">:8153</div><div class="service-badge online"><span class="badge-dot"></span> Online</div></div></a>
+      <a class="service-card" href="http://100.82.34.59:8080" target="_blank"><div class="service-icon orange">⚙️</div><div class="service-info"><div class="service-name">Jenkins</div><div class="service-url">:8080</div><div class="service-badge online"><span class="badge-dot"></span> Online</div></div></a>
+      <a class="service-card" href="http://100.82.34.59:8085" target="_blank"><div class="service-icon green">🌐</div><div class="service-info"><div class="service-name">Dev App</div><div class="service-url">:8085</div><div class="service-badge online"><span class="badge-dot"></span> Online</div></div></a>
+      <a class="service-card" href="http://100.82.34.59:3000" target="_blank"><div class="service-icon purple">🛝</div><div class="service-info"><div class="service-name">Playground</div><div class="service-url">:3000</div><div class="service-badge online"><span class="badge-dot"></span> Online</div></div></a>
+    </div>
+    <div class="section-title">Recent Activity</div>
+    <div class="activity">
+      <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text"><strong>Pipeline passed</strong> <span>· my-first-pipeline #1 completed in 18m 35s</span></div><div class="activity-time">just now</div></div>
+      <div class="activity-item"><div class="activity-dot blue"></div><div class="activity-text"><strong>Agent connected</strong> <span>· gocd-agent-wolfi joined the pool</span></div><div class="activity-time">1h ago</div></div>
+      <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text"><strong>Tailscale connected</strong> <span>· elijah joined via Windows 11</span></div><div class="activity-time">2h ago</div></div>
+      <div class="activity-item"><div class="activity-dot orange"></div><div class="activity-text"><strong>Cloudflare tunnel active</strong> <span>· 917ventures.com tunnel running</span></div><div class="activity-time">yesterday</div></div>
+    </div>
+  </main>
+  <footer>devpulse · 917ventures.com · built on docker + gocd + tailscale</footer>
+  <script>
+    let count = 0; const target = 47; const el = document.getElementById('pipelines');
+    const interval = setInterval(() => { count += 1; el.textContent = count; if (count >= target) clearInterval(interval); }, 40);
+  </script>
+</body>
+</html>
