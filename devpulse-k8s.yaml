@@ -12,10 +12,12 @@ spec:
       labels:
         app: devpulse
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: colima
       containers:
       - name: devpulse
-        image: devpulse:latest
-        imagePullPolicy: Never
+        image: 100.125.202.56:5000/devpulse:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
 ---
