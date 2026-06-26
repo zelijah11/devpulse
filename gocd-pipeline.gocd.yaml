@@ -1,0 +1,37 @@
+format_version: 10
+pipelines:
+  devpulse-pipeline:
+    group: defaultGroup
+    materials:
+      git-repo:
+        git: https://github.com/zelijah11/devpulse.git
+        branch: main
+    stages:
+      - deploy-stage:
+          jobs:
+            deploy-job:
+              tasks:
+                - exec:
+                    command: docker
+                    arguments:
+                      - build
+                      - -t
+                      - 100.125.202.56:5000/devpulse
+                      - .
+                - exec:
+                    command: docker
+                    arguments:
+                      - push
+                      - 100.125.202.56:5000/devpulse
+                - exec:
+                    command: kubectl
+                    arguments:
+                      - apply
+                      - -f
+                      - devpulse-k8s.yaml
+                - exec:
+                    command: kubectl
+                    arguments:
+                      - rollout
+                      - restart
+                      - deployment/devpulse
