@@ -18,6 +18,8 @@ pipelines:
                       - build
                       - --platform
                       - linux/amd64,linux/arm64
+                      - --builder
+                      - multiarch
                       - -t
                       - 100.125.202.56:30500/devpulse:latest
                       - --push
