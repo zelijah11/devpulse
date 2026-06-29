@@ -14,15 +14,14 @@ pipelines:
                 - exec:
                     command: docker
                     arguments:
+                      - buildx
                       - build
+                      - --platform
+                      - linux/amd64,linux/arm64
                       - -t
-                      - 100.125.202.56:5000/devpulse
+                      - 100.125.202.56:5000/devpulse:latest
+                      - --push
                       - .
-                - exec:
-                    command: docker
-                    arguments:
-                      - push
-                      - 100.125.202.56:5000/devpulse
                 - exec:
                     command: kubectl
                     arguments:
