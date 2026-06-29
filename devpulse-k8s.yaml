@@ -16,7 +16,7 @@ spec:
         kubernetes.io/hostname: colima
       containers:
       - name: devpulse
-        image: 100.125.202.56:5000/devpulse:latest
+        image: 100.125.202.56:30500/devpulse:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
