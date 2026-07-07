@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: devpulse
-        image: 100.125.202.56:30500/devpulse:latest
+        image: 100.98.48.59:30500/devpulse:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
